@@ -10,24 +10,25 @@ public class Triangle {
         this.c = c;
     }
 
-    public static double TriangleArea(double a, double b,double c) {
-        var p = (a + b + c )/ 2;
-        var num = p * (p-a) * (p-b) * (p-c);
+
+    public static void PrintTriangleArea(Triangle exampleTriangle) {
+        var text = String.format("Площадь треугольника со сторонами %f, %f, %f = %f", exampleTriangle.a, exampleTriangle.b, exampleTriangle.c, exampleTriangle.area());
+        System.out.println(text);
+    }
+    public double area() {
+        var p = (this.a + this.b + this.c )/ 2;
+        var num = p * (p-this.a) * (p-this.b) * (p-this.c);
         var squareTriangle = Math.sqrt(num);
         return squareTriangle;
     }
-    public static double TrianglePerimeter(double a, double b,double c) {
-        return a + b + c;
-    }
 
-    public static void PrintTriangleArea(double a, double b, double c) {
-        var text = String.format("Площадь треугольника со сторонами %f, %f, %f = %f", a, b, c, TriangleArea(a, b, c));
+    public static void PrintTrianglePerimeter(Triangle exampleTriangle){
+        var text = String.format("Периметр треугольника со сторонами %f, %f, %f = %f", exampleTriangle.a, exampleTriangle.b, exampleTriangle.c, exampleTriangle.perimeter());
         System.out.println(text);
     }
 
-    public static void PrintTrianglePerimeter(double a, double b, double c) {
-        var text = String.format("Периметр треугольника со сторонами %f, %f, %f = %f", a, b, c, TrianglePerimeter(a, b, c));
-        System.out.println(text);
+    public double perimeter() {
+        return (this.a + this.b + this.c);
     }
 
 }
