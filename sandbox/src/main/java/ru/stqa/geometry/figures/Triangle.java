@@ -5,12 +5,16 @@ public class Triangle {
     private double b;
     private double c;
     public Triangle (double a, double b, double c){
+        if (a < 0 || b < 0 || c < 0) {
+            throw new IllegalArgumentException ("Triangle side should be not-negative");
+        }
+        if ((a+b<c)||( a+c <b)||( b+c<a)) {
+            throw new IllegalArgumentException ("Triangle inequality violation");
+        }
         this.a = a;
         this.b = b;
         this.c = c;
     }
-
-
     public static void PrintTriangleArea(Triangle exampleTriangle) {
         var text = String.format("Площадь треугольника со сторонами %f, %f, %f = %f", exampleTriangle.a, exampleTriangle.b, exampleTriangle.c, exampleTriangle.area());
         System.out.println(text);
