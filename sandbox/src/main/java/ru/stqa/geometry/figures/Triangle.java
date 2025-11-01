@@ -45,7 +45,7 @@ public class Triangle {
         return (Double.compare(triangle.a, a) == 0 && Double.compare(triangle.b, b) == 0 && Double.compare(triangle.c, c) == 0)||
                (Double.compare(triangle.a, a) == 0 && Double.compare(triangle.b, c) == 0 && Double.compare(triangle.c, b) == 0)||
                (Double.compare(triangle.a, b) == 0 && Double.compare(triangle.b, a) == 0 && Double.compare(triangle.c, c) == 0)||
-               (Double.compare(triangle.a, b) == 0 && Double.compare(triangle.b, c) == 0 && Double.compare(triangle.c, b) == 0)||
+               (Double.compare(triangle.a, b) == 0 && Double.compare(triangle.b, c) == 0 && Double.compare(triangle.c, a) == 0)||
                (Double.compare(triangle.a, c) == 0 && Double.compare(triangle.b, a) == 0 && Double.compare(triangle.c, b) == 0)||
                (Double.compare(triangle.a, c) == 0 && Double.compare(triangle.b, b) == 0 && Double.compare(triangle.c, a) == 0);
     }
