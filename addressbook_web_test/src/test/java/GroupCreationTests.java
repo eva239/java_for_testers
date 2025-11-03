@@ -31,7 +31,6 @@ public class GroupCreationTests {
         driver.findElement(By.xpath("//div[4]/form/input")).click();
         driver.findElement(By.name("group_name")).click();
         driver.findElement(By.name("group_name")).sendKeys("Group name");
-        driver.findElement(By.name("group_header")).click();
         driver.findElement(By.name("group_header")).sendKeys("Group header");
         driver.findElement(By.name("group_footer")).sendKeys("Group footer");
         driver.findElement(By.name("submit")).click();
@@ -54,10 +53,9 @@ public class GroupCreationTests {
         }
         driver.findElement(By.xpath("//div[4]/form/input")).click();
         driver.findElement(By.name("group_name")).click();
-        driver.findElement(By.name("group_name")).sendKeys("Group name");
-        driver.findElement(By.name("group_header")).click();
-        driver.findElement(By.name("group_header")).sendKeys("Group header");
-        driver.findElement(By.name("group_footer")).sendKeys("Group footer");
+        driver.findElement(By.name("group_name")).sendKeys("");
+        driver.findElement(By.name("group_header")).sendKeys("");
+        driver.findElement(By.name("group_footer")).sendKeys("");
         driver.findElement(By.name("submit")).click();
         driver.findElement(By.linkText("group page")).click();
     }
