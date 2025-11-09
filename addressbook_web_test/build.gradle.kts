@@ -19,4 +19,8 @@ dependencies {
 
 tasks.test {
     useJUnitPlatform()
+    if (project.hasProperty("browser")) {
+        systemProperty("browser", project.property("browser"))
+    }
 }
+
