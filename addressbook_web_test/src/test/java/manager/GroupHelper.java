@@ -1,11 +1,12 @@
 package manager;
 
+import model.ContactData;
 import model.GroupData;
 import org.openqa.selenium.By;
 
-public class GroupHelper extends HelperBase{
+public class GroupHelper extends HelperBase {
 
-    public GroupHelper(ApplicationManager manager){
+    public GroupHelper(ApplicationManager manager) {
         super(manager);
     }
 
@@ -25,14 +26,16 @@ public class GroupHelper extends HelperBase{
         submitGroupModification();
         returnToGroupsPage();
     }
+
     public void removeGroup() {
         OpenGroupsPage();
         selectGroup();
         removeSelectedGroup();
         returnToGroupsPage();
     }
+
     public void OpenGroupsPage() {
-        if (!manager.isElementPresent(By.name("name"))) {
+        if (!manager.isElementPresent(By.name("new"))) {
             click(By.linkText("groups"));
         }
     }
@@ -75,4 +78,5 @@ public class GroupHelper extends HelperBase{
     private void selectGroup() {
         click(By.name("selected[]"));
     }
+
 }
