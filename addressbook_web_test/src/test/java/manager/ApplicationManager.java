@@ -24,7 +24,6 @@ public class ApplicationManager {
                 driver = new ChromeDriver();
             } else {
                 throw new IllegalArgumentException(String.format("Unknown browser %s", browser));
-
             }
             Runtime.getRuntime().addShutdownHook(new Thread(driver::quit));
             driver.get("http://localhost/addressbook/");
