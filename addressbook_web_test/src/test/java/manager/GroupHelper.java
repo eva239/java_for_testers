@@ -1,6 +1,5 @@
 package manager;
 
-import model.ContactData;
 import model.GroupData;
 import org.openqa.selenium.By;
 
@@ -30,7 +29,7 @@ public class GroupHelper extends HelperBase {
     public void removeGroup() {
         OpenGroupsPage();
         selectGroup();
-        removeSelectedGroup();
+        removeSelectedGroups();
         returnToGroupsPage();
     }
 
@@ -38,11 +37,6 @@ public class GroupHelper extends HelperBase {
         if (!manager.isElementPresent(By.name("new"))) {
             click(By.linkText("groups"));
         }
-    }
-
-    public boolean isGroupPresent() {
-        OpenGroupsPage();
-        return manager.isElementPresent(By.name("selected[]"));
     }
 
     private void submitGroupCreation() {
@@ -53,7 +47,7 @@ public class GroupHelper extends HelperBase {
         click(By.xpath("//div[4]/form/input"));
     }
 
-    private void removeSelectedGroup() {
+    private void removeSelectedGroups() {
         click(By.name("delete"));
     }
 
@@ -79,4 +73,21 @@ public class GroupHelper extends HelperBase {
         click(By.name("selected[]"));
     }
 
+    public int getCount() {
+        OpenGroupsPage();
+        return manager.driver.findElements(By.name("selected[]")).size();
+    }
+
+    public void removeAllGroup() {
+        OpenGroupsPage();
+        selectAllGroups();
+        removeSelectedGroups();
+    }
+
+    private void selectAllGroups() {
+        var checkboxes = manager.driver.findElements(By.name("selected[]"));
+        for (var checkbox:checkboxes){
+            checkbox.click();
+        }
+    }
 }
