@@ -90,13 +90,13 @@ public class ContactHelper extends HelperBase {
     public void modifyContact(ContactData contact, ContactData modifiedContact) {
         OpenContactsPage();
         selectContact(contact);
-        initContactModification();
+        initContactModification(contact);
         fillContactForm(modifiedContact);
         submitContactModification();
         returnToContactsPage();
     }
-    private void initContactModification() {
-        click(By.xpath("//td[@class='center']/a/img[@src='icons/pencil.png']"));
+    private void initContactModification(ContactData contact) {
+        click(By.xpath(String.format("//a[@href='edit.php?id=%s']",contact.id())));
     }
 
     private void fillContactForm(ContactData contact) {
