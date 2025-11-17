@@ -1,6 +1,7 @@
 package manager;
 
 import model.ContactData;
+import model.GroupData;
 import org.openqa.selenium.By;
 
 import java.util.ArrayList;
@@ -85,4 +86,27 @@ public class ContactHelper extends HelperBase {
         }
         return contacts;
     }
+
+    public void modifyContact(ContactData contact, ContactData modifiedContact) {
+        OpenContactsPage();
+        selectContact(contact);
+        initContactModification();
+        fillContactForm(modifiedContact);
+        submitContactModification();
+        returnToContactsPage();
+    }
+    private void initContactModification() {
+        click(By.xpath("//td[@class='center']/a/img[@src='icons/pencil.png']"));
+    }
+
+    private void fillContactForm(ContactData contact) {
+        type(By.name("lastname"), contact.lastname());
+        type(By.name("firstname"), contact.firstname());
+        type(By.name("middlename"), contact.middlename());
+    }
+    private void submitContactModification() {
+        click(By.name("update"));
+    }
+
+
 }
