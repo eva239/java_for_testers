@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
+import ru.stqa.addressbook.common.CommonFunctions;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -14,7 +15,11 @@ public class ContactCreationTests extends TestBase {
 
     @Test
     public void CanCreateContact() {
-        app.contacts().createContact(new ContactData("", "lastname", "firstname", "middlename"));
+        var contact = new ContactData()
+                .withFirstname(CommonFunctions.randomString(10))
+                .withLastname(CommonFunctions.randomString(10))
+                .withPhoto(randomFile("src/test/resources/images"));
+        app.contacts().createContact(contact);
     }
 
 
@@ -29,9 +34,9 @@ public class ContactCreationTests extends TestBase {
         }
         for (int i = 0; i < 5; i++) {
             result.add(new ContactData()
-                    .withLastname(randomString(i * 10))
-                    .withFirstname(randomString(i * 10))
-                    .withMiddlename(randomString(i * 10)));
+                    .withLastname(CommonFunctions.randomString(i * 10))
+                    .withFirstname(CommonFunctions.randomString(i * 10))
+                    .withMiddlename(CommonFunctions.randomString(i * 10)));
         }
         return result;
     }

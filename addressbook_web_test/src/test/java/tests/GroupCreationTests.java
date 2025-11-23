@@ -4,10 +4,13 @@ import model.GroupData;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
+import tools.jackson.databind.ObjectMapper;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import com.fasterxml.jackson.core.type;
 
 public class GroupCreationTests extends TestBase {
 
@@ -20,12 +23,8 @@ public class GroupCreationTests extends TestBase {
                 }
             }
         }
-        for (int i = 0; i < 5; i++) {
-            result.add(new GroupData()
-                    .withName(randomString(i * 10))
-                    .withHeader(randomString(i * 10))
-                    .withFooter(randomString(i * 10)));
-        }
+        ObjectMapper mapper = new ObjectMapper();
+        MyValue value = mapper.readValue(new File("groups.json"), new TypeReference));
         return result;
     }
 
