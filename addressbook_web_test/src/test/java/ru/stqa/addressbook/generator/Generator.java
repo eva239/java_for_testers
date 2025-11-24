@@ -2,6 +2,9 @@ package ru.stqa.addressbook.generator;
 
 import com.beust.jcommander.JCommander;
 import com.beust.jcommander.Parameter;
+import com.fasterxml.jackson.dataformat.xml.XmlMapper;
+import com.fasterxml.jackson.dataformat.yaml.YAMLMapper;
+import model.ContactData;
 import model.GroupData;
 import ru.stqa.addressbook.common.CommonFunctions;
 import tools.jackson.databind.ObjectMapper;
@@ -9,10 +12,11 @@ import tools.jackson.databind.SerializationFeature;
 import tools.jackson.databind.json.JsonMapper;
 
 import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
-import java.io.Serializable;
 import java.util.ArrayList;
-import com.fasterxml.jackson.core.type;
+
+import static tests.TestBase.randomFile;
 
 public class Generator {
     @Parameter(names = {"--type", "-t"})
@@ -44,8 +48,19 @@ public class Generator {
 
     private void save(Object data) throws IOException {
         if ("json".equals(format)) {
-            ObjectMapper mapper = new ObjectMapper();
-            mapper.enable(SerializationFeature.INDENT_OUTPUT);
+            ObjectMapper mapper = JsonMapper.builder().enable(SerializationFeature.INDENT_OUTPUT).build();
+            var json = mapper.writeValueAsString(data);
+
+            try (var writer = new FileWriter(output)) {
+                writer.write(json);
+            }
+        }
+        if ("yaml".equals(format)) {
+            var mapper = new YAMLMapper();
+            mapper.writeValue(new File(output), data);
+        }
+        if ("xml".equals(format)) {
+            var mapper = new XmlMapper();
             mapper.writeValue(new File(output), data);
         } else {
             throw new IllegalArgumentException("Неизвестный формат данных" + format);
@@ -56,7 +71,7 @@ public class Generator {
     private Object generate() {
         if ("groups".equals(type)) {
             return generateGroups();
-        } else if ("contact".equals(type)) {
+        } else if ("contacts".equals(type)) {
             return generateContacts();
         } else {
             throw new IllegalArgumentException("Неизвестный тип данных" + type);
@@ -75,6 +90,14 @@ public class Generator {
     }
 
     private Object generateContacts() {
-        return null;
+        var result = new ArrayList<ContactData>();
+        for (int i = 0; i < count; i++) {
+            result.add(new ContactData()
+                    .withLastname(CommonFunctions.randomString(i * 10))
+                    .withFirstname(CommonFunctions.randomString(i * 10))
+                    .withMiddlename(CommonFunctions.randomString(i * 10))
+                    .withPhoto(randomFile("src/test/resources/images")));
+        }
+        return result;
     }
 }
