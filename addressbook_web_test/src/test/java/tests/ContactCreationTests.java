@@ -50,12 +50,13 @@ public class ContactCreationTests extends TestBase {
         return result;
     }
 
-    public static List<ContactData> singleRandomContact()  {
+    public static List<ContactData> singleRandomContact() {
         return List.of(new ContactData()
                 .withLastname(CommonFunctions.randomString(10))
                 .withFirstname(CommonFunctions.randomString(20))
                 .withPhoto(randomFile("src/test/resources/images")));
     }
+
     @ParameterizedTest
     @MethodSource("singleRandomContact")
     public void canCreateSingleContact(ContactData contact) {

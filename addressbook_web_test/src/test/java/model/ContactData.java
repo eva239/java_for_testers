@@ -13,13 +13,12 @@ public record ContactData(String id, String lastname, String firstname, String m
         return new ContactData(this.id, lastname, this.firstname, this.middlename, this.photo, this.address);
     }
 
-
     public ContactData withFirstname(String firstname) {
         return new ContactData(this.id, this.lastname, firstname, this.middlename, this.photo, this.address);
     }
 
     public ContactData withMiddlename(String middlename) {
-        return new ContactData(this.id, this.lastname, this.firstname, this.middlename, this.photo, this.address);
+        return new ContactData(this.id, this.lastname, this.firstname, middlename, this.photo, this.address);
     }
 
     public ContactData withPhoto(String photo) {

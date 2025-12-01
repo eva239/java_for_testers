@@ -8,17 +8,15 @@ import jakarta.persistence.Table;
 @Table(name = "addressbook")
 public class ContactRecord {
 
-
     @Id
     public int id;
     public String firstname;
     public String lastname;
-
     public String middlename;
     public String address;
 
-
-    public ContactRecord() {}
+    public ContactRecord() {
+    }
 
     public ContactRecord(int id, String firstname, String lastname, String middlename, String address) {
         this.id = id;
@@ -26,6 +24,5 @@ public class ContactRecord {
         this.lastname = lastname;
         this.middlename = middlename;
         this.address = address;
-
     }
 }
