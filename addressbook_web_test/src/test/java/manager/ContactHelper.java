@@ -29,10 +29,9 @@ public class ContactHelper extends HelperBase {
         returnToContactsPage();
     }
 
-    private void selectGroup(GroupData group){
+    private void selectGroup(GroupData group) {
         new Select(manager.driver.findElement(By.name("new_group"))).selectByValue(group.id());
     }
-
 
 
     public void RemoveContact(ContactData contact) {
@@ -54,7 +53,7 @@ public class ContactHelper extends HelperBase {
         type(By.name("lastname"), contact.lastname());
         type(By.name("firstname"), contact.firstname());
         type(By.name("middlename"), contact.middlename());
-            attach(By.name("photo"),contact.photo());
+        attach(By.name("photo"), contact.photo());
     }
 
 
@@ -74,7 +73,7 @@ public class ContactHelper extends HelperBase {
     }
 
     private void selectContact(ContactData contact) {
-        click(By.cssSelector(String.format("input[value = '%s']",contact.id())));
+        click(By.cssSelector(String.format("input[value = '%s']", contact.id())));
 //        click(By.name("selected[]"));
     }
 
@@ -91,7 +90,7 @@ public class ContactHelper extends HelperBase {
         OpenContactsPage();
         var contacts = new ArrayList<ContactData>();
         var rows = manager.driver.findElements(By.name("entry"));
-        for (var row : rows){
+        for (var row : rows) {
             var td = row.findElements(By.tagName("td"));
             var lastname = td.get(1).getText();
             var firstname = td.get(2).getText();
@@ -111,8 +110,9 @@ public class ContactHelper extends HelperBase {
         submitContactModification();
         returnToContactsPage();
     }
+
     private void initContactModification(ContactData contact) {
-        click(By.xpath(String.format("//a[@href='edit.php?id=%s']",contact.id())));
+        click(By.xpath(String.format("//a[@href='edit.php?id=%s']", contact.id())));
     }
 
     private void fillContactForm(ContactData contact) {
@@ -120,10 +120,37 @@ public class ContactHelper extends HelperBase {
         type(By.name("firstname"), contact.firstname());
         type(By.name("middlename"), contact.middlename());
     }
+
     private void submitContactModification() {
         click(By.name("update"));
     }
 
+    public void addContactInGroup(ContactData contact, GroupData group) {
+        OpenContactsPage();
+        selectContact(contact);
+        selectGrouptoAdd(group);
+        submitContactToGroup();
+    }
 
+    private void selectGrouptoAdd(GroupData group) {
+        new Select(manager.driver.findElement(By.name("to_group"))).selectByValue(group.id());
+    }
 
+    private void submitContactToGroup() {
+        click(By.name("add"));
+    }
+
+    public void deleteContactFromGroup(ContactData contact, GroupData group) {
+        OpenContactsPage();
+        selectGroupToDelete(group);
+        selectContact(contact);
+        submitDeleteContactToGroup();
+    }
+
+    private void selectGroupToDelete(GroupData group) {
+        new Select(manager.driver.findElement(By.name("group"))).selectByValue(group.id());
+    }
+    private void submitDeleteContactToGroup() {
+        click(By.name("remove"));
+    }
 }

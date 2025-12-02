@@ -75,7 +75,7 @@ public class ContactCreationTests extends TestBase {
     }
 
     @Test
-    public void CanCreateContactInGroup() {
+    public void canCreateContactInGroup() {
         var contact = new ContactData()
                 .withFirstname(CommonFunctions.randomString(10))
                 .withLastname(CommonFunctions.randomString(10))
