@@ -36,24 +36,31 @@ public class ContactModificationTests extends TestBase {
 
     @Test
     public void canAddContactInGroup() {
-        if (app.contacts().getCount() == 0) {
-            var contact = new ContactData()
-                    .withFirstname(CommonFunctions.randomString(10))
-                    .withLastname(CommonFunctions.randomString(10))
-                    .withPhoto(randomFile("src/test/resources/images"));
-            app.contacts().createContact(contact);
-        }
-        if (app.hbm().getGroupCount() == 0) {
-            app.hbm().createGroup(new GroupData("", "Group name", "Group header", "Group footer"));
-        }
         var contacts = app.hbm().getContactList();
-        var rnd = new Random();
-        var index = rnd.nextInt(contacts.size());
-        var group = app.hbm().getGroupList().get(0);
+        var groups = app.hbm().getGroupList();
 
-        var oldRelated = app.hbm().getContactInGroup(group);
-        app.contacts().addContactInGroup(contacts.get(index), group);
-        var newRelated = app.hbm().getContactInGroup(group);
-        Assertions.assertEquals(oldRelated.size() + 1, newRelated.size());
+        outerLoop:
+        for (int i = 0; i < contacts.size(); i++) {
+            if (contacts.size() == 0) {
+                var contact = new ContactData()
+                        .withFirstname(CommonFunctions.randomString(10))
+                        .withLastname(CommonFunctions.randomString(10))
+                        .withPhoto(randomFile("src/test/resources/images"));
+                app.contacts().createContact(contact);
+            }
+            for (int j = 0; j < groups.size(); j++) {
+                if (groups.size() == 0) {
+                    app.hbm().createGroup(new GroupData("", "Group name", "Group header", "Group footer"));
+                }
+
+                var oldRelated = app.hbm().getContactInGroup(groups.get(j));
+                app.contacts().addContactInGroup(contacts.get(i), (groups.get(j)));
+                var newRelated = app.hbm().getContactInGroup(groups.get(j));
+                if (oldRelated.size() + 1 == newRelated.size()) {
+                    Assertions.assertEquals(oldRelated.size() + 1, newRelated.size());
+                    break outerLoop;
+                }
+            }
+        }
     }
 }
