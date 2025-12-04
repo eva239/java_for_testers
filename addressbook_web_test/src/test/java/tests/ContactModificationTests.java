@@ -38,27 +38,36 @@ public class ContactModificationTests extends TestBase {
     public void canAddContactInGroup() {
         var contacts = app.hbm().getContactList();
         var groups = app.hbm().getGroupList();
+        if (contacts.size() == 0) {
+            var contact = new ContactData()
+                    .withFirstname(CommonFunctions.randomString(10))
+                    .withLastname(CommonFunctions.randomString(10))
+                    .withPhoto(randomFile("src/test/resources/images"));
+            app.contacts().createContact(contact);
+        }
+        if (groups.size() == 0) {
+            app.hbm().createGroup(new GroupData("", "Group name", "Group header", "Group footer"));
+        }
+        contacts = app.hbm().getContactList();
+        groups = app.hbm().getGroupList();
 
         outerLoop:
         for (int i = 0; i < contacts.size(); i++) {
-            if (contacts.size() == 0) {
-                var contact = new ContactData()
-                        .withFirstname(CommonFunctions.randomString(10))
-                        .withLastname(CommonFunctions.randomString(10))
-                        .withPhoto(randomFile("src/test/resources/images"));
-                app.contacts().createContact(contact);
-            }
             for (int j = 0; j < groups.size(); j++) {
-                if (groups.size() == 0) {
-                    app.hbm().createGroup(new GroupData("", "Group name", "Group header", "Group footer"));
-                }
-
                 var oldRelated = app.hbm().getContactInGroup(groups.get(j));
                 app.contacts().addContactInGroup(contacts.get(i), (groups.get(j)));
                 var newRelated = app.hbm().getContactInGroup(groups.get(j));
                 if (oldRelated.size() + 1 == newRelated.size()) {
                     Assertions.assertEquals(oldRelated.size() + 1, newRelated.size());
                     break outerLoop;
+                } else {
+                    var contactN = new ContactData()
+                            .withFirstname(CommonFunctions.randomString(10))
+                            .withLastname(CommonFunctions.randomString(10))
+                            .withPhoto(randomFile("src/test/resources/images"));
+                    app.contacts().createContact(contactN);
+                    contacts = app.hbm().getContactList();
+                    groups = app.hbm().getGroupList();
                 }
             }
         }
