@@ -91,7 +91,11 @@ public class HibernateHelper extends HelperBase {
                 .withFirstname(record.firstname)
                 .withLastname(record.lastname)
                 .withMiddlename(record.middlename)
-                .withAddress(record.address);
+                .withAddress(record.address)
+                .withHome(record.home)
+                .withMobile(record.mobile)
+                .withWork(record.work)
+                .withSecondary(record.phone2);
     }
 
     private static ContactRecord convert(ContactData data) {

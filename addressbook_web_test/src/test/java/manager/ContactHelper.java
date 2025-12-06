@@ -153,4 +153,21 @@ public class ContactHelper extends HelperBase {
     private void submitDeleteContactToGroup() {
         click(By.name("remove"));
     }
+
+    public String getPhones(ContactData contact) {
+        return manager.driver.findElement(By.xpath(String.format("//input[@id='%s']/../../td[6]",contact.id()))).getText();
+    }
+
+//    public Map<String,String> getPhones(ContactData contact) {
+//        var result = new HashMap<String,String >();
+//        selectContact(contact);
+//        List< WebElement> rows = manager.driver.findElements(By.name("entry"));
+//        for (WebElement row:rows) {
+//            var id = row.findElement(By.tagName("input")).getAttribute("id");
+//            var phones = row.findElements(By.tagName("td")).get(5).getText();
+//            result.put(id,phones);
+//        }
+//        return result;
+//    }
+
 }

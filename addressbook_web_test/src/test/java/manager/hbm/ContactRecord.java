@@ -14,6 +14,10 @@ public class ContactRecord {
     public String lastname;
     public String middlename;
     public String address;
+    public String home;
+    public String work;
+    public String mobile;
+    public String phone2;
 
     public ContactRecord() {
     }
