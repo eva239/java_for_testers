@@ -8,7 +8,7 @@ public class Hello {
         System.out.println(configFile.getAbsolutePath());
         System.out.println(configFile.exists());
 
-        System.out.println(new File("")) //объект, соответствующий текущей директории;
+        System.out.println(new File("")); //объект, соответствующий текущей директории;
 
     }
 
