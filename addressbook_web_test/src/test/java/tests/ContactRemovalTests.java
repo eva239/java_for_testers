@@ -28,42 +28,24 @@ public class ContactRemovalTests extends TestBase {
     }
 
     @Test
-    public void canDeleteContactFromGroup() {
-        var contacts = app.hbm().getContactList();
+    void canDeleteContactFromGroup() {
         var groups = app.hbm().getGroupList();
-        if (contacts.size() == 0) {
+        if (groups.isEmpty()) {
+            app.hbm().createGroup(new GroupData("", CommonFunctions.randomString(10), CommonFunctions.randomString(10), CommonFunctions.randomString(10)));
+            groups = app.hbm().getGroupList();
+        }
+        var group = groups.get(0);
+        if (app.hbm().getContactInGroup(group).isEmpty()) {
             var contact = new ContactData()
                     .withFirstname(CommonFunctions.randomString(10))
-                    .withLastname(CommonFunctions.randomString(10))
-                    .withPhoto(randomFile("src/test/resources/images"));
+                    .withLastname(CommonFunctions.randomString(10));
             app.contacts().createContact(contact);
         }
-        if (groups.size() == 0) {
-            app.hbm().createGroup(new GroupData("", "Group name", "Group header", "Group footer"));
-        }
-        contacts = app.hbm().getContactList();
-        groups = app.hbm().getGroupList();
-
-        outerLoop:
-        for (int i = 0; i < groups.size(); i++) {
-            for (int j = 0; j < contacts.size(); j++) {
-                var oldRelated = app.hbm().getContactInGroup(groups.get(i));
-                if (oldRelated.size() == 0) {
-                    var contact = new ContactData()
-                            .withFirstname(CommonFunctions.randomString(10))
-                            .withLastname(CommonFunctions.randomString(10))
-                            .withPhoto(randomFile("src/test/resources/images"));
-                    app.contacts().createContact(contact);
-                    app.contacts().addContactInGroup(contacts.get(j), groups.get(i));
-                }
-                oldRelated = app.hbm().getContactInGroup(groups.get(i));
-                app.contacts().deleteContactFromGroup(contacts.get(j), groups.get(i));
-                var newRelated = app.hbm().getContactInGroup(groups.get(j));
-                if (oldRelated.size() - 1 == newRelated.size()) {
-                    Assertions.assertEquals(oldRelated.size() - 1, newRelated.size());
-                    break outerLoop;
-                }
-            }
-        }
+        var oldRelated = app.hbm().getContactInGroup(group);
+        var contactToRemove = oldRelated.get(0);
+        app.contacts().deleteContactFromGroup(contactToRemove, group);
+        var newRelated = app.hbm().getContactInGroup(group);
+        Assertions.assertEquals(oldRelated.size() - 1, newRelated.size());
     }
 }
+

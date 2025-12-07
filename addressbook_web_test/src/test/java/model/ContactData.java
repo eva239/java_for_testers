@@ -45,5 +45,16 @@ public record ContactData(String id, String lastname, String firstname, String m
     public ContactData withSecondary(String secondary) {
         return new ContactData(this.id, this.lastname, this.firstname, this.middlename, this.photo, this.address, this.home,  this.mobile, this.work,  secondary);
     }
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        ContactData that = (ContactData) o;
+        return id != null && id.equals(that.id);
+    }
 
+    @Override
+    public int hashCode() {
+        return id != null ? id.hashCode() : 0;
+    }
 }
