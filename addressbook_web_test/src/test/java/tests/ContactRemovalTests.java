@@ -30,7 +30,7 @@ public class ContactRemovalTests extends TestBase {
     @Test
     void canDeleteContactFromGroup() {
         var groups = app.hbm().getGroupList();
-        if (groups.isEmpty()) {
+        if (groups.size()==0) {
             app.hbm().createGroup(new GroupData("", CommonFunctions.randomString(10), CommonFunctions.randomString(10), CommonFunctions.randomString(10)));
             groups = app.hbm().getGroupList();
         }

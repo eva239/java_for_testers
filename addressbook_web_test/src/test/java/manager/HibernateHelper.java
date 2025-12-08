@@ -58,12 +58,13 @@ public class HibernateHelper extends HelperBase {
         });
     }
 
-    public void createGroup(GroupData groupData) {
+    public GroupData createGroup(GroupData groupData) {
         sessionFactory.inSession(session -> {
             session.getTransaction().begin();
             session.persist(convert(groupData));
             session.getTransaction().commit();
         });
+        return groupData;
     }
 
     public List<ContactData> getContactInGroup(GroupData group) {
