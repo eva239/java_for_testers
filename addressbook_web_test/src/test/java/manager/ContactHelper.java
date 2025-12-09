@@ -7,6 +7,8 @@ import org.openqa.selenium.support.ui.Select;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class ContactHelper extends HelperBase {
     public ContactHelper(ApplicationManager manager) {
@@ -155,7 +157,11 @@ public class ContactHelper extends HelperBase {
     }
 
     public String getPhones(ContactData contact) {
-        return manager.driver.findElement(By.xpath(String.format("//input[@id='%s']/../../td[6]",contact.id()))).getText();
+        var phones = manager.driver.findElement(By.xpath(String.format("//input[@id='%s']/../../td[6]",contact.id()))).getText();
+        String newphones = Stream.of(phones.split("\\r?\\n"))
+                .limit(phones.split("\\r?\\n").length-1)
+                .collect(Collectors.joining("\n"));
+        return newphones;
     }
 
     public String getAddress(ContactData contact) {
@@ -165,6 +171,31 @@ public class ContactHelper extends HelperBase {
 
     public String getEmails(ContactData contact) {
         return manager.driver.findElement(By.xpath(String.format("//input[@id='%s']/../../td[5]",contact.id()))).getText();
+    }
+
+    public String getPhonesFromEdit(ContactData contact) {
+        initContactModification(contact);
+        var home = manager.driver.findElement(By.name("home")).getAttribute("value");
+        var mobile = manager.driver.findElement(By.name("mobile")).getAttribute("value");
+        var work = manager.driver.findElement(By.name("work")).getAttribute("value");
+        return Stream.of(home,mobile,work)
+                .filter(s -> s != null && !"".equals(s))
+                .collect(Collectors.joining("\n"));
+    }
+
+    public String getAddressFromEdit(ContactData contact) {
+        initContactModification(contact);
+        return (manager.driver.findElement(By.name("address")).getText());
+    }
+
+    public String getEmailsFromEdit(ContactData contact) {
+        initContactModification(contact);
+        var email = manager.driver.findElement(By.name("email")).getAttribute("value");
+        var email2 = manager.driver.findElement(By.name("email2")).getAttribute("value");
+        var email3 = manager.driver.findElement(By.name("email3")).getAttribute("value");
+        return Stream.of(email,email2,email3)
+                .filter(s -> s != null && !"".equals(s))
+                .collect(Collectors.joining("\n"));
     }
 
 //    public Map<String,String> getPhones(ContactData contact) {
