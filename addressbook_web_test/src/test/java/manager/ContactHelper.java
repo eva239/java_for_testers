@@ -158,6 +158,15 @@ public class ContactHelper extends HelperBase {
         return manager.driver.findElement(By.xpath(String.format("//input[@id='%s']/../../td[6]",contact.id()))).getText();
     }
 
+    public String getAddress(ContactData contact) {
+        selectContact(contact);
+        return manager.driver.findElement(By.xpath(String.format("//input[@id='%s']/../../td[4]",contact.id()))).getText();
+    }
+
+    public String getEmails(ContactData contact) {
+        return manager.driver.findElement(By.xpath(String.format("//input[@id='%s']/../../td[5]",contact.id()))).getText();
+    }
+
 //    public Map<String,String> getPhones(ContactData contact) {
 //        var result = new HashMap<String,String >();
 //        selectContact(contact);

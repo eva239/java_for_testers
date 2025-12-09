@@ -19,14 +19,20 @@ public class ContactRecord {
     public String mobile;
     public String phone2;
 
+    public String email;
+    public String email2;
+    public String email3;
     public ContactRecord() {
     }
 
-    public ContactRecord(int id, String firstname, String lastname, String middlename, String address) {
+    public ContactRecord(int id, String firstname, String lastname, String middlename, String address, String email , String email2, String email3) {
         this.id = id;
         this.firstname = firstname;
         this.lastname = lastname;
         this.middlename = middlename;
         this.address = address;
+        this.email = email;
+        this.email2 = email2;
+        this.email3 = email3;
     }
 }

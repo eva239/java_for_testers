@@ -46,7 +46,8 @@ public class HibernateHelper extends HelperBase {
         }
         return new GroupRecord(Integer.parseInt(id), data.name(), data.header(), data.footer());
     }
-     public List<GroupData> getGroupList() {
+
+    public List<GroupData> getGroupList() {
         return sessionFactory.fromSession(session -> {
             return convertList(session.createQuery("from GroupRecord", GroupRecord.class).list());
         });
@@ -78,6 +79,7 @@ public class HibernateHelper extends HelperBase {
             return convertContactList(session.createQuery("from ContactRecord", ContactRecord.class).list());
         });
     }
+
     static List<ContactData> convertContactList(List<ContactRecord> records) {
         return records.stream().map(HibernateHelper::convert).collect(Collectors.toList());
 //        List<ContactData> result = new ArrayList<>();
@@ -96,7 +98,10 @@ public class HibernateHelper extends HelperBase {
                 .withHome(record.home)
                 .withMobile(record.mobile)
                 .withWork(record.work)
-                .withSecondary(record.phone2);
+                .withSecondary(record.phone2)
+                .withEmail(record.email)
+                .withEmail2(record.email2)
+                .withEmail3(record.email3);
     }
 
     private static ContactRecord convert(ContactData data) {
@@ -104,6 +109,6 @@ public class HibernateHelper extends HelperBase {
         if ("".equals(id)) {
             id = "0";
         }
-        return new ContactRecord(Integer.parseInt(id), data.firstname(), data.lastname(), data.middlename(), data.address());
+        return new ContactRecord(Integer.parseInt(id), data.firstname(), data.lastname(), data.middlename(), data.address(), data.email(), data.email2(), data.email3());
     }
 }
