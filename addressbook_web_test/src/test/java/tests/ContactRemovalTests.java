@@ -38,8 +38,11 @@ public class ContactRemovalTests extends TestBase {
         if (app.hbm().getContactInGroup(group).isEmpty()) {
             var contact = new ContactData()
                     .withFirstname(CommonFunctions.randomString(10))
-                    .withLastname(CommonFunctions.randomString(10));
+                    .withLastname(CommonFunctions.randomString(10))
+                    .withPhoto(randomFile("src/test/resources/images"));
             app.contacts().createContact(contact);
+            contact = app.hbm().getContactList().get(0);
+            app.contacts().addContactInGroup(contact, group);
         }
         var oldRelated = app.hbm().getContactInGroup(group);
         var contactToRemove = oldRelated.get(0);

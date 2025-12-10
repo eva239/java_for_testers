@@ -38,57 +38,37 @@ public class ContactModificationTests extends TestBase {
         var contacts = app.hbm().getContactList();
         var groups = app.hbm().getGroupList();
         if (groups.size() == 0) {
+            app.hbm().createGroup(new GroupData("", CommonFunctions.randomString(10), CommonFunctions.randomString(10), CommonFunctions.randomString(10)));
+        }
+        if (contacts.size() == 0) {
             var contact = new ContactData()
                     .withFirstname(CommonFunctions.randomString(10))
                     .withLastname(CommonFunctions.randomString(10))
                     .withPhoto(randomFile("src/test/resources/images"));
             app.contacts().createContact(contact);
-            if (app.hbm().getGroupCount() == 0) {
-                app.hbm().createGroup(new GroupData("", CommonFunctions.randomString(10), CommonFunctions.randomString(10), CommonFunctions.randomString(10)));
-            }
-            var group = app.hbm().getGroupList().get(0);
-            var oldRelated = app.hbm().getContactInGroup(group);
-            contact = app.hbm().getContactList().get(0);
-            app.contacts().addContactInGroup(contact, group);
-            var newRelated = app.hbm().getContactInGroup(group);
-            Assertions.assertEquals(oldRelated.size() + 1, newRelated.size());
         }
-        else if (groups.size() > 0) {
-            var group = app.hbm().getGroupList().get(0);
-            var contactsInGroup = app.hbm().getContactInGroup(group);
-            Comparator<ContactData> compareById = (o1, o2) -> {
-                return Integer.compare(Integer.parseInt(o1.id()), Integer.parseInt(o2.id()));
-            };
-            contacts.sort(compareById);
-            contactsInGroup.sort(compareById);
-            if (contacts.equals(contactsInGroup)) {
-                if (app.hbm().getGroupCount() == 0) {
-                    app.hbm().createGroup(new GroupData("", CommonFunctions.randomString(10), CommonFunctions.randomString(10), CommonFunctions.randomString(10)));
-                }
-                var groupNew = app.hbm().getGroupList().get(0);
-                var contact = new ContactData()
+        var group = app.hbm().getGroupList().get(0);
+        var contactsInGroup = app.hbm().getContactInGroup(group);
+        ContactData contact = app.hbm().getContactList().get(0);
+        ContactData contactToAdd = null;
+        if (contactsInGroup.isEmpty()) {
+            contactToAdd = contact;
+        }
+        for (var i = 0; i < contactsInGroup.size(); i++) {
+            if (contactsInGroup.get(i).equals(contact)) {
+                var contactNew = new ContactData()
                         .withFirstname(CommonFunctions.randomString(10))
                         .withLastname(CommonFunctions.randomString(10))
                         .withPhoto(randomFile("src/test/resources/images"));
-                app.contacts().createContact(contact);
+                app.contacts().createContact(contactNew);
                 contacts = app.hbm().getContactList();
-                var maxId = contacts.get(contacts.size() - 1).id();
-                var oldRelated = app.hbm().getContactInGroup(groupNew);
-                app.contacts().addContactInGroup(contact.withId(maxId), groupNew);
-                var newRelated = app.hbm().getContactInGroup(groupNew);
-                Assertions.assertEquals(oldRelated.size() + 1, newRelated.size());
-            } else {
-                for (var i = 0; i < contacts.size(); i++) {
-                    if (i >= contactsInGroup.size() && (!(contacts.get(i).equals(contactsInGroup.get(i))))) {
-                        var oldRelated = app.hbm().getContactInGroup(groups.get(0));
-                        app.contacts().addContactInGroup(contacts.get(i), (groups.get(0)));
-                        var newRelated = app.hbm().getContactInGroup(groups.get(0));
-                        Assertions.assertEquals(oldRelated.size() + 1, newRelated.size());
-                        break;
-                    }
-                }
+                var maxId = contacts.get(contacts.size()-1).id();
+                contactToAdd = contact.withId(maxId);
             }
         }
+        var oldRelated = app.hbm().getContactInGroup(group);
+        app.contacts().addContactInGroup(contactToAdd, group);
+        var newRelated = app.hbm().getContactInGroup(group);
+        Assertions.assertEquals(oldRelated.size() + 1, newRelated.size());
     }
-
 }
