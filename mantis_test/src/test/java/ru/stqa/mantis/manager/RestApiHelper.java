@@ -19,7 +19,7 @@ public class RestApiHelper extends HelperBase{
 
     public void createIssue(IssueData issueData) {
         Issue issue = new Issue();
-        issue.setSummary(issueData.summery());
+        issue.setSummary(issueData.summary());
         issue.setDescription(issueData.description());
         var projectId = new Identifier();
         projectId.setId(issueData.project());
