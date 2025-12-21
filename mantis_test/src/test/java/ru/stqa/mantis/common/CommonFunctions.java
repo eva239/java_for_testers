@@ -2,6 +2,7 @@ package ru.stqa.mantis.common;
 
 import java.util.Random;
 import java.util.function.Supplier;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -21,5 +22,15 @@ public class CommonFunctions {
 //            result = result + (char) ('a' + rnd.nextInt(26));
 //        }
         return result;
+    }
+
+    public static String extractUrl(String content) {
+        var pattern = Pattern.compile("http://\\S*");
+        var matcher = pattern.matcher(content);
+        String url = String.valueOf(0);
+        if (matcher.find()) {
+            url = content.substring(matcher.start(), matcher.end());
+        }
+        return url;
     }
 }
