@@ -1,5 +1,5 @@
 plugins {
-    id("java")
+    java
 }
 
 group = "org.example"
@@ -7,6 +7,11 @@ version = "1.0-SNAPSHOT"
 
 repositories {
     mavenCentral()
+}
+
+val agent by configurations.creating {
+    isCanBeResolved = true
+    isCanBeConsumed = false
 }
 
 dependencies {
@@ -20,12 +25,19 @@ dependencies {
     implementation("com.fasterxml.jackson.dataformat:jackson-dataformat-xml:2.15.0")
     implementation("com.mysql:mysql-connector-j:9.5.0")
     implementation("org.hibernate.orm:hibernate-core:6.6.37.Final")
+
+    agent("org.aspectj:aspectjweaver:1.9.22")
+
+    testImplementation(platform("io.qameta.allure:allure-bom:2.29.0"))
+    testImplementation("io.qameta.allure:allure-junit5")
 }
 
 tasks.test {
     useJUnitPlatform()
+
     if (project.hasProperty("browser")) {
         systemProperty("browser", project.property("browser"))
     }
-}
 
+    jvmArgs = listOf("-javaagent:${project.configurations["agent"].singleFile.absolutePath}")
+}
